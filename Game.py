@@ -12,7 +12,7 @@ imagen_chao = pygame.transform.scale2x(
 imagem_background = pygame.transform.scale2x(
     pygame.image.load(os.path.join("imgs", "bg.png")))
 
-imagens_passaro = [
+IMAGEMS_PASSARO = [
     pygame.transform.scale2x(pygame.image.load(
         os.path.join("imgs", "bird1.png"))),
     pygame.transform.scale2x(pygame.image.load(
@@ -27,7 +27,7 @@ FONTE_PONTOS = pygame.font.SysFont('arial', 50)
 
 
 class Passaro:
-    imgs = imagens_passaro
+    IMGS = IMAGEMS_PASSARO
 
     # animaçoes da rotacao
     rotacao_maxima = 25
@@ -43,7 +43,30 @@ class Passaro:
         self.altura = self.y
         self.tempo = 0
         self.contagem_imagem = 0
-        self.imagem = imgs[0]
+        self.imagem = IMGS[0]
+
+    def pular(self):
+        self.velocidade = -10.5
+        self.tempo = 0
+        self.altura = self.y
+
+    def mover(self):
+        self.tempo += 1
+        deslocamento = 1.5 * (self.tempo ** 2) + self.velocidade * self.tempo
+
+        if deslocamento > 16:
+            deslocamento = 16
+        elif deslocamento < 0:
+            deslocamento -= 2
+
+        self.y += deslocamento
+
+        if deslocamento < 0 or self.y < (self.altura + 50):
+            if self.altura < self.rotacao_maxima:
+                self.altura = self.rotacao_maxima
+        else:
+            if self.angulo > -90:
+                self.angulo = self.velocidade_rotacao
 
 
 class Cano:
